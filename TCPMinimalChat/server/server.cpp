@@ -5,7 +5,7 @@
 #include <thread>
 #include <vector>
 
-#include "mysocket.h"
+#include "../../mysocket.h"
 
 #define WIN(exp) exp  // быстрая обвязка макросами участков кода под ОС
 #define NIX(exp)
@@ -169,11 +169,11 @@ void connectionInit(const char *address, const char *port) {
                   << ": Application can not load WSA library!" << std::endl;
         exit(1);
     } else {
-        std::cout << "WSA initialization is OK" << std::endl;
+        // std::cout << "WSA initialization is OK" << std::endl;
     }
 
     int sockfd;                            // socket declaration
-    int es;                                // error ststus
+    int errorState;                                // error state
     struct addrinfo hints, *servinfo, *p;  // structs for address information
     memset(&hints, 0, sizeof hints);       // clean temporary struct
     hints.ai_family = PF_UNSPEC;           // automatic socket type detection
@@ -199,7 +199,7 @@ void connectionInit(const char *address, const char *port) {
             perror("Socket binding ERROR");
             continue;
         }
-        printf("Client bind to %s\n",
+        printf("Server bind to %s is OK\n",
                inet_ntoa(((sockaddr_in *)(p->ai_addr))->sin_addr));
         break;
     }
@@ -211,7 +211,7 @@ void connectionInit(const char *address, const char *port) {
     freeaddrinfo(servinfo);
 
     /* listening */
-    int errorState = listen(sockfd, SOMAXCONN);
+    errorState = listen(sockfd, SOMAXCONN);
     if (errorState != 0) {
         std::cout << "Error #" << WSAGetLastError()
                   << ": incorrect start listening!" << std::endl;
@@ -320,9 +320,6 @@ void connectionInitLegacy(const char *address, unsigned short port) {
         gethostname(name, 255);
         name[255] = '\0';
         std::cout << "\nHostname: " << name << " - ";
-        // std::cout << "\nHostname: " << name << " (" <<
-        // inet_ntoa(addr.sin_addr)
-        //           << ") - ";
         std::cout << "Listening connections..." << std::endl;
     }
 
