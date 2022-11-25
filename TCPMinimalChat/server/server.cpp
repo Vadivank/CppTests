@@ -5,7 +5,7 @@
 #include <thread>
 #include <vector>
 
-#include "../../mysocket.h"
+#include "mysocket.h"
 
 #define WIN(exp) exp  // быстрая обвязка макросами участков кода под ОС
 #define NIX(exp)
